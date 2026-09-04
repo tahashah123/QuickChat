@@ -4,7 +4,8 @@ import { generateToken } from "../lib/Utils.js";
 import cloudinary from "../lib/cloudinary.js"
 
 export const signup = async (req, res) => {
-    const { fullName, email, password } = req.body;
+    const { fullName, password } = req.body;
+    const email = req.body.email?.trim().toLowerCase();
     try {
         if (!fullName || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
@@ -33,7 +34,7 @@ export const signup = async (req, res) => {
 
             return res.status(201).json({
                 _id: newuser._id,
-                fullname: newuser.fullname,
+                fullName: newuser.fullName,
                 email: newuser.email,
                 profilePic: newuser.profilePic
             });
@@ -47,7 +48,8 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-    const {email,password} = req.body
+    const {password} = req.body
+    const email = req.body.email?.trim().toLowerCase();
     try {
         if(!email || !password) return res.status(400).json({message:"email and password are required"})
     const foundUser = await  User.findOne({email})
@@ -57,7 +59,7 @@ export const login = async (req, res) => {
     generateToken(foundUser._id,res)
      return res.status(201).json({
                 _id: foundUser._id,
-                fullname: foundUser.fullname,
+                fullName: foundUser.fullName,
                 email: foundUser.email,
                 profilePic: foundUser.profilePic
             });

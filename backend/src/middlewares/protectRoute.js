@@ -13,5 +13,6 @@ export const protectRoute = async (req,res,next)=>{
     next()
     } catch (error) {
         console.error("protectRoute middlware error :"+ error)
+        return res.status(401).json({message:"Unauthorized"})
     }
 }
