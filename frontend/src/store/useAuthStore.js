@@ -29,7 +29,7 @@ export const useAuthStore = create((set)=>({
             set({authUser:res.data})
             toast.success("Account created successfuly")
         } catch (error) {
-           toast.error(error.response?.data?.message || "Unable to create account")
+              toast.error(error.response?.data?.message || "Unable to create account. Check that the server is running.")
         }finally{
             set({isSignningUp:false})
         }
@@ -42,7 +42,7 @@ export const useAuthStore = create((set)=>({
              set({authUser:res.data})
             toast.success("Logged in successfully")
         } catch (error) {
-           toast.error(error.response?.data?.message || "Unable to login")
+              toast.error(error.response?.data?.message || "Unable to login. Check that the server is running.")
         }finally{
             set({isLoggingIn:false})
         }
@@ -55,6 +55,18 @@ export const useAuthStore = create((set)=>({
             toast.success("Logged out successfully")
         } catch (error) {
             toast.error(error.response?.data?.message || "Unable to logout")
+        }
+    },
+    updateProfile : async(image)=>{
+        try {
+            set({isUpdatingProfile:true})
+           const res = await axiosInstance.put("/auth/updateprofile",image)
+           set({authUser:res.data})
+           toast.success("Profile updated successfuly")
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Unable to update profile")
+        } finally{
+            set({isUpdatingProfile:false})
         }
     }
 }))
