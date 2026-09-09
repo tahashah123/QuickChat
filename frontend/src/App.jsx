@@ -1,7 +1,7 @@
 import './index.css'
 import { Routes, Route,Navigate } from "react-router-dom"
 import Navbar from './components/navbar'
-import Homepage from './pages/homepage'
+import Homepage from './pages/HomePage'
 import SignupPage from './pages/signupPage'
 import LoginPage from './pages/LoginPage'
 import SettingsPage from './pages/settingsPage'

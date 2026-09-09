@@ -10,7 +10,7 @@ import messageRoute from "./routes/messageRoutes.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 3000;
 
 // 1. CORS Configuration
 app.use(
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // 4. API Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/message", messageRoute);
+app.use("/api/messages", messageRoute);
 
 // 5. Start Server
 app.listen(PORT, () => {
