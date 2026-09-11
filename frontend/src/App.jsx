@@ -2,10 +2,10 @@ import './index.css'
 import { Routes, Route,Navigate } from "react-router-dom"
 import Navbar from './components/navbar'
 import Homepage from './pages/HomePage'
-import SignupPage from './pages/signupPage'
+import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/LoginPage'
-import SettingsPage from './pages/settingsPage'
-import ProfilePage from './pages/profilePage'
+import SettingsPage from './pages/SettingsPage'
+import ProfilePage from './pages/ProfilePage'
 import { useAuthStore } from './store/useAuthStore'
 import {Loader} from "lucide-react"
 import { useEffect } from 'react'
