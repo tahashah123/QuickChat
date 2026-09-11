@@ -6,10 +6,9 @@ import cors from "cors";
 import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import messageRoute from "./routes/messageRoutes.js";
+import {app,server} from "./lib/socket.js"
 
 dotenv.config();
-
-const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 1. CORS Configuration
@@ -32,7 +31,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoute);
 
 // 5. Start Server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("Server running on PORT: " + PORT);
   connectDB();
 });
