@@ -7,9 +7,11 @@ import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import messageRoute from "./routes/messageRoutes.js";
 import {app,server} from "./lib/socket.js"
+import path from "path";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
+const __dirname = path.resolve();
 
 // 1. CORS Configuration
 app.use(
@@ -29,6 +31,14 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 // 4. API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoute);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 
 // 5. Start Server
 server.listen(PORT, () => {
