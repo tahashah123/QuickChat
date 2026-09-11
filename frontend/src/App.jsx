@@ -21,13 +21,13 @@ function App() {
   console.log(authUser)
    if (isCheckingAuth && !authUser)
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
+      <div className="flex items-center justify-center min-h-screen bg-base-200">
+        <Loader className="size-8 animate-spin text-primary" />
       </div>
     );
     
   return (
-    <div data-theme={theme}>
+    <div data-theme={theme} className="min-h-screen bg-base-200">
       <Navbar />
       <Routes>
         <Route path='/' element={authUser?<Homepage />:<Navigate to="/login"/>} />

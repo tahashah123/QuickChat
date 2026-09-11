@@ -1,4 +1,3 @@
-import React from 'react'
 import { useThemeStore } from '../store/useThemeStore'
 import { THEMES } from '../constants'
 import { Send } from "lucide-react";
@@ -12,11 +11,11 @@ function SettingsPage() {
   const {theme,setTheme} = useThemeStore()
   
   return (
-    <div className="h-screen container mx-auto px-4 pt-20 max-w-5xl">
-      <div className="space-y-6">
+    <main className="app-shell bg-base-200 px-4 py-6 sm:py-10">
+      <div className="mx-auto max-w-5xl space-y-6 rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm sm:p-8">
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold">Theme</h2>
-          <p className="text-sm text-base-content/70">Choose a theme for your chat interface</p>
+          <h1 className="text-2xl font-semibold tracking-tight">Appearance</h1>
+          <p className="text-sm app-muted">Choose a theme for your chat interface. Your choice is saved automatically.</p>
         </div>
 
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
@@ -24,8 +23,8 @@ function SettingsPage() {
             <button
               key={t}
               className={`
-                group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors
-                ${theme === t ? "bg-base-200" : "hover:bg-base-200/50"}
+                group flex flex-col items-center gap-1.5 border p-2 rounded-xl transition-all
+                ${theme === t ? "border-primary bg-primary/10" : "border-transparent hover:border-base-300 hover:bg-base-200/50"}
               `}
               onClick={() => setTheme(t)}
             >
@@ -45,8 +44,8 @@ function SettingsPage() {
         </div>
 
         {/* Preview Section */}
-        <h3 className="text-lg font-semibold mb-3">Preview</h3>
-        <div className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-lg">
+        <h2 className="text-lg font-semibold mb-3">Preview</h2>
+        <div className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-sm">
           <div className="p-4 bg-base-200">
             <div className="max-w-lg mx-auto">
               {/* Mock Chat UI */}
@@ -111,9 +110,8 @@ function SettingsPage() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 
 export default SettingsPage
- 

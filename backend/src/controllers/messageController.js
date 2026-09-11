@@ -21,6 +21,20 @@ export const getMessages =async (req,res)=>{
         const senderId = req.user._id
         const messages = await Message.find({$or:[{receiverId:userToChatId,senderId:senderId},
             {receiverId:senderId,senderId:userToChatId}]})
+        const unreadMessages = messages.filter((message) => String(message.receiverId) === String(senderId) && !message.readAt)
+        if (unreadMessages.length) {
+            const now = new Date()
+            await Message.updateMany(
+                { _id: { $in: unreadMessages.map((message) => message._id) } },
+                { $set: { deliveredAt: now, readAt: now } }
+            )
+            unreadMessages.forEach((message) => {
+                message.deliveredAt = now
+                message.readAt = now
+                const senderSocketId = getReceiverSocketId(message.senderId.toString())
+                if (senderSocketId) io.to(senderSocketId).emit("messageReceipt", { messageId: message._id.toString(), status: "read" })
+            })
+        }
         return res.status(200).send(messages)
     } catch (error) {
         console.error("Error in get messages controller:", error.message);

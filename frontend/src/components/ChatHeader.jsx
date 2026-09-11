@@ -1,38 +1,11 @@
-import React from 'react'
-import { useChatStore } from '../store/useChatStore'
-import {useAuthStore} from '../store/useAuthStore'
-import {X} from 'lucide-react'
+import { ChevronLeft, X } from "lucide-react";
+import { useChatStore } from "../store/useChatStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 function ChatHeader() {
-    const {selectedUser,setSelectedUser} = useChatStore()
-    const {onlineUsers} = useAuthStore()
-  return (
-      <div className="p-2.5 border-b border-base-300">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {/* Avatar */}
-          <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
-            </div>
-          </div>
-
-          {/* User info */}
-          <div>
-            <h3 className="font-medium">{selectedUser.fullName}</h3>
-            <p className="text-sm text-base-content/70">
-              {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
-            </p>
-          </div>
-        </div>
-
-        {/* Close button */}
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
-        </button>
-      </div>
-    </div>
-  )
+  const { selectedUser, setSelectedUser } = useChatStore();
+  const { onlineUsers } = useAuthStore();
+  const isOnline = onlineUsers.includes(selectedUser._id);
+  return <header className="flex shrink-0 items-center justify-between border-b border-base-300 bg-base-100 px-3 py-3 sm:px-5"><div className="flex min-w-0 items-center gap-3"><button onClick={() => setSelectedUser(null)} className="btn btn-ghost btn-square btn-sm md:hidden" aria-label="Back to conversations"><ChevronLeft className="size-5" /></button><div className="relative"><img src={selectedUser.profilePic || "/avatar.png"} alt="" className="size-10 rounded-full object-cover" />{isOnline && <span className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-base-100 bg-emerald-500" />}</div><div className="min-w-0"><h2 className="truncate font-semibold">{selectedUser.fullName}</h2><p className="text-xs app-muted">{isOnline ? "Online now" : "Offline"}</p></div></div><button onClick={() => setSelectedUser(null)} className="btn btn-ghost btn-square btn-sm hidden md:inline-flex" aria-label="Close conversation"><X className="size-5" /></button></header>;
 }
-
-export default ChatHeader
+export default ChatHeader;

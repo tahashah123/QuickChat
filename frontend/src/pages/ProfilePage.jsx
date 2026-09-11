@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
-import { Camera , Mail, User} from 'lucide-react'
+import { Camera, Mail, User, CalendarDays, ShieldCheck } from 'lucide-react'
 
 function ProfilePage() {
   const {authUser,isUpdatingProfile,updateProfile} = useAuthStore()
@@ -17,12 +17,12 @@ function ProfilePage() {
     }
   }
   return (
-     <div className="h-screen pt-20">
-      <div className="max-w-2xl mx-auto p-4 py-8">
-        <div className="bg-base-300 rounded-xl p-6 space-y-8">
+     <main className="app-shell bg-base-200 px-4 py-6 sm:py-10">
+      <div className="max-w-2xl mx-auto">
+        <div className="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm space-y-8 sm:p-8">
           <div className="text-center">
-            <h1 className="text-2xl font-semibold ">Profile</h1>
-            <p className="mt-2">Your profile information</p>
+            <h1 className="text-2xl font-semibold tracking-tight">Your profile</h1>
+            <p className="mt-2 text-sm app-muted">Manage the information visible to your contacts.</p>
           </div>
 
           {/* avatar upload section */}
@@ -32,19 +32,19 @@ function ProfilePage() {
               <img
                 src={selectedImg || authUser?.profilePic || "/avatar.png"}
                 alt="Profile"
-                className="size-32 rounded-full object-cover border-4 "
+                className="size-28 rounded-full object-cover border-4 border-base-100 shadow-md"
               />
               <label
                 htmlFor="avatar-upload"
                 className={`
                   absolute bottom-0 right-0 
-                  bg-base-content hover:scale-105
+                  bg-primary text-primary-content hover:scale-105
                   p-2 rounded-full cursor-pointer 
                   transition-all duration-200
                   ${isUpdatingProfile ? "animate-pulse pointer-events-none" : ""}
                 `}
               >
-                <Camera className="w-5 h-5 text-base-200" />
+                <Camera className="w-5 h-5" />
                 <input
                   type="file"
                   id="avatar-upload"
@@ -55,45 +55,45 @@ function ProfilePage() {
                 />
               </label>
             </div>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm app-muted">
               {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo"}
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="grid gap-5 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <div className="text-sm text-zinc-400 flex items-center gap-2">
+              <div className="text-sm app-muted flex items-center gap-2">
                 <User className="w-4 h-4" />
                 Full Name
               </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.fullName}</p>
+              <p className="px-4 py-3 bg-base-200 rounded-xl border border-base-300 break-words">{authUser?.fullName}</p>
             </div>
 
             <div className="space-y-1.5">
-              <div className="text-sm text-zinc-400 flex items-center gap-2">
+              <div className="text-sm app-muted flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 Email Address
               </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.email}</p>
+              <p className="px-4 py-3 bg-base-200 rounded-xl border border-base-300 break-words">{authUser?.email}</p>
             </div>
           </div>
 
-          <div className="mt-6 bg-base-300 rounded-xl p-6">
-            <h2 className="text-lg font-medium  mb-4">Account Information</h2>
+          <div className="rounded-xl border border-base-300 bg-base-200/50 p-5">
+            <h2 className="text-lg font-semibold mb-4">Account information</h2>
             <div className="space-y-3 text-sm">
-              <div className="flex items-center justify-between py-2 border-b border-zinc-700">
-                <span>Member Since</span>
+              <div className="flex items-center justify-between py-2 border-b border-base-300">
+                <span className="flex items-center gap-2 app-muted"><CalendarDays className="size-4" />Member since</span>
                 <span>{authUser.createdAt?.split("T")[0]}</span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span>Account Status</span>
-                <span className="text-green-500">Active</span>
+                <span className="flex items-center gap-2 app-muted"><ShieldCheck className="size-4" />Account status</span>
+                <span className="text-emerald-600 font-medium">Active</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 

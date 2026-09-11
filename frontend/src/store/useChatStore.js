@@ -7,6 +7,7 @@ export const useChatStore = create((set,get)=>({
     users:[],
     messages:[],
     selectedUser:null,
+    unreadCounts:{},
     isMessagesLoading:false,
     isUsersLoading:false,
 
@@ -42,22 +43,41 @@ export const useChatStore = create((set,get)=>({
         }
     },
     setSelectedUser:async(selectedUser)=>{
-        set({selectedUser})
+        set((state)=>({
+            selectedUser,
+            unreadCounts: selectedUser ? {...state.unreadCounts,[selectedUser._id]:0} : state.unreadCounts,
+        }))
     },
     subscribeToMessages:()=>{
-       const {selectedUser} = get()
-       if(!selectedUser) return;
        const {socket} = useAuthStore.getState()
        if(!socket) return;
        socket.on("newMessage",(newMessage)=>{
         const currentSelectedUser = get().selectedUser
-        if (String(newMessage.senderId) !== String(currentSelectedUser?._id)) return
-        set({messages:[...get().messages,newMessage]})
+        socket.emit("messageDelivered", newMessage._id)
+        if (String(newMessage.senderId) === String(currentSelectedUser?._id)) {
+          socket.emit("messageRead", newMessage._id)
+          set({messages:[...get().messages,newMessage]})
+          return
+        }
+        set((state)=>({
+          unreadCounts:{
+            ...state.unreadCounts,
+            [newMessage.senderId]: Math.min((state.unreadCounts[newMessage.senderId] || 0) + 1, 99),
+          },
+        }))
+       })
+       socket.on("messageReceipt", ({ messageId, status }) => {
+        set((state) => ({
+          messages: state.messages.map((message) => message._id === messageId
+            ? { ...message, deliveredAt: status === "delivered" ? new Date().toISOString() : message.deliveredAt || new Date().toISOString(), readAt: status === "read" ? new Date().toISOString() : message.readAt }
+            : message),
+        }));
        })
     },
     unsubscribeFromMessages:()=>{
         const {socket} = useAuthStore.getState()
         if(!socket) return;
         socket.off("newMessage")
+        socket.off("messageReceipt")
     }
 }))
