@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Sidebar from "../components/sidebar";
-import NoChatSelected from "../components/noChatSelected";
+import NoChatSelected from "../components/NoChatSelected";
 import ChatContainer from "../components/ChatContainer";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
